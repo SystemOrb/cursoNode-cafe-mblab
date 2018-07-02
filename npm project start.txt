@@ -1,0 +1,15 @@
+npm install express --save
+npm install nodemon --save
+npm install body-parser --save
+npm install mongoose --save
+npm install colors --save
+npm install mongoose-unique-validator --save
+npm install bcrypt --save
+npm install underscore
+https://underscorejs.org/
+
+para HEROKU VARIABLES ENTORNOS PARA PROTEGER CODIGO DE GIT
+heroku config // para obtener las variables
+heroku config:set <var>='Value' // Para crear variable de entorno'
+heroku config:get <var> // Obtener el valor de una variable de entorno
+heroku config:unset <var> // Elimina una variable de entorno
