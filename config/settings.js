@@ -4,10 +4,10 @@ Del cloud o en local
 */
 const PORT = process.env.PORT || 3000;
 
-// ENVIROMENT 
+// VARIABLES DE ENTORNO
 process.env.NODE_ENV = process.env.NODE_ENV || 'developer';
 /*
-CONNECTION
+CONEXIÓN
 */
 let Connection;
 if (process.env.NODE_ENV === 'developer') {
@@ -15,7 +15,17 @@ if (process.env.NODE_ENV === 'developer') {
 } else {
     Connection = process.env.MONGO_URI; // protected
 }
+/*
+EXPIRACIÓN DEL TOKEN
+*/ // 1 hora
+const expires = 60 * 60
+    /*
+    GENERADOR DE SECRET DEL TOKEN
+    */
+const secretKey = process.env.MONGO_KEY || 'gjTDqiEObCZQaurTU';
 module.exports = {
     PORT,
-    Connection
+    Connection,
+    expires,
+    secretKey
 }

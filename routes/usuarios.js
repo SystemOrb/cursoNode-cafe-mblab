@@ -6,7 +6,8 @@ const express = require('express');
 const app = express();
 const Usuario = require('../models/usuario');
 const bcrypt = require('bcrypt');
-var _ = require("underscore");
+const _ = require("underscore");
+const tokenizer = require('../middlewares/auth');
 app.get('/', (request, response, next) => {
     // VAMOS A HACER UNA LISTA PAGINADA OPCIONAL
     let limit = Number(request.query.limit) || 5; // Por parametro o 5 por defecto
@@ -53,7 +54,7 @@ app.get('/', (request, response, next) => {
         throw new Error('No pudo conectar con la base de datos '.red, error);
     }
 });
-app.post('/', (request, response, next) => {
+app.post('/', [tokenizer.authVerify, tokenizer.role], (request, response, next) => {
     // Parseamos a url-8encode la data
     let body = request.body;
     //creamos un nuevo objeto de tipo usuario (Schema)
@@ -78,14 +79,15 @@ app.post('/', (request, response, next) => {
                 status: true,
                 requestStatus: 201,
                 message: 'Usuario creado correctamente',
-                userDB
+                userDB,
+                session: request.data
             });
         });
     } catch (error) {
         throw new Error('No pudo conectar con la base de datos '.red, error);
     }
 });
-app.put('/:id', (request, response, next) => {
+app.put('/:id', [tokenizer.authVerify], (request, response, next) => {
     let id = request.params.id;
     // _pick de underscore para filtrar los datos que queremos manipular
     let objectUpdate = _.pick(request.body, ['name', 'email', 'role', 'status']);
@@ -117,7 +119,7 @@ app.put('/:id', (request, response, next) => {
         throw new Error('No pudo conectar con la base de datos '.red, error)
     }
 });
-app.delete('/:id', (request, response, next) => {
+app.delete('/:id', [tokenizer.authVerify], (request, response, next) => {
     // Para eliminar un registro de forma fisica de la bbdd
     let id = request.params.id;
     try {
@@ -149,7 +151,7 @@ app.delete('/:id', (request, response, next) => {
         throw new Error('No pudo conectar con la base de datos '.red, error);
     }
 });
-app.put('/baja/:id/', (request, response, next) => {
+app.put('/baja/:id/', [tokenizer.authVerify], (request, response, next) => {
     // para actualizar el estado de un usuario ALTA|BAJA
     let id = request.params.id;
     try {
