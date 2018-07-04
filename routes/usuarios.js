@@ -54,7 +54,7 @@ app.get('/', (request, response, next) => {
         throw new Error('No pudo conectar con la base de datos '.red, error);
     }
 });
-app.post('/', [tokenizer.authVerify, tokenizer.role], (request, response, next) => {
+app.post('/', (request, response, next) => {
     // Parseamos a url-8encode la data
     let body = request.body;
     //creamos un nuevo objeto de tipo usuario (Schema)
