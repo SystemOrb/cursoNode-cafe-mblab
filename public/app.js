@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const port = require('../config/settings').PORT;
 const connection = require('../config/settings').Connection;
 const mongoose = require('mongoose');
+const path = require('path');
 require('colors');
 
 // MIDDLEWARES
@@ -12,6 +13,8 @@ require('colors');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Habilitamos la carpeta publica
+app.use(express.static(path.resolve(__dirname + '/')));
 // ROUTES IMPORTS
 app.use(require('../routes/index'));
 
